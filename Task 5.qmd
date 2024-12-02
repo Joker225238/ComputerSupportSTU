@@ -1,0 +1,37 @@
+# Загрузка данных
+library(ggplot2)
+
+# Чтение данных
+london_data <- read.csv("C:/Users/lenovo/Desktop/homework CSV/london_weekdays.csv")
+
+# Гистограмма: распределение цен
+hist(london_data$realSum, 
+     main = "Распределение цен в Лондоне", 
+     xlab = "Цена за ночь", 
+     col = "skyblue", 
+     border = "white")
+
+# Точечный график: цена vs расстояние до центра
+ggplot(london_data, aes(x = dist, y = realSum, color = room_type)) +
+  geom_point(alpha = 0.6) +
+  labs(title = "Цена vs расстояние до центра", x = "Расстояние до центра (км)", y = "Цена за ночь") +
+  theme_minimal()
+
+# Ящик с усами: сравнение цен по типу комнаты
+ggplot(london_data, aes(x = room_type, y = realSum, fill = room_type)) +
+  geom_boxplot() +
+  labs(title = "Сравнение цен по типу комнаты", x = "Тип комнаты", y = "Цена за ночь") +
+  theme_minimal()
+
+# Произвольный график: рейтинг чистоты vs общий рейтинг гостей
+ggplot(london_data, aes(x = cleanliness_rating, y = guest_satisfaction_overall)) +
+  geom_jitter(alpha = 0.6, color = "purple") +
+  labs(title = "Чистота vs рейтинг гостей", x = "Рейтинг чистоты", y = "Общий рейтинг гостей") +
+  theme_minimal()
+
+
+
+
+
+
+
