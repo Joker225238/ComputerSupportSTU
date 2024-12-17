@@ -1,0 +1,51 @@
+
+```{r}
+# Task 2.1: Random vector and subsetting
+v <- rnorm(50)  # Create random vector
+```
+
+```{r}
+# Print specific subsets of the vector
+print(v[10])                           # 10th item
+print(v[10:20])                        # Items from 10th to 20th
+print(v[5:(5 + 9)])                    # 10 items starting from 5th
+print(v[v > 0])                        # All items bigger than 0
+print(tail(v, 5))                      # Last 5 items
+```
+
+
+
+```{r}
+# Task 2.2: Data frame subsetting
+df <- data.frame(a = rnorm(50), 
+                 b = 1:50, 
+                 cc = sample(letters, 50, replace = TRUE))
+```
+
+
+```{r}
+# Find and print specific subsets of the data frame
+print(tail(df, 10))                    # Last 10 rows
+print(df$cc[15])                       # 15th item of column `cc`
+print(df[10:20, c("a", "b")])          # Subset columns `a` and `b` and rows 10th to 20th
+b_vector <- df$b                       # New vector from column `b`
+print(b_vector)
+```
+
+```{r}
+# Task 2.3: Random vector with NA values
+v_na <- rnorm(30)                      # Create random vector
+num_na <- sample(10, 1)                # Number of NAs
+v_na[sample(30, num_na)] <- NA         # Insert NAs
+
+```
+
+
+```{r}
+# Working with NA values
+print(v_na[!is.na(v_na)])              # All non-NA items
+print(sum(is.na(v_na)))                # Number of NA values
+print(min(v_na, na.rm = TRUE))         # Minimum value, excluding NA
+print(max(v_na, na.rm = TRUE))         # Maximum value, excluding NA
+print(mean(v_na, na.rm = TRUE))        # Mean value, excluding NA
+```

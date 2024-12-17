@@ -1,29 +1,62 @@
+
+```{r}
 # Load necessary library
-library(dplyr)
+ library(dplyr)
+```
 
+```{r}
 # Load the data
-airquality <- read.csv("airquality.csv")
+require(graphics)
+pairs(airquality, panel = panel.smooth, main = "airquality data")
+```
 
+
+```{r}
 # 1. What are the column names of the data frame?
 colnames(airquality)
+```
 
+
+
+```{r}
 # 2. What are the row names of the data frame?
 rownames(airquality)
 
+```
+
+
+```{r}
 # 3. Extract the first 6 rows of the data frame and print them to the console
 head(airquality, 6)
 
+```
+
+
+```{r}
 # 4. How many observations (i.e. rows) are in this data frame?
 nrow(airquality)
+```
 
+
+```{r}
 # 5. Extract the last 6 rows of the data frame and print them to the console
 tail(airquality, 6)
+```
 
+
+```{r}
 # 6. How many missing values are in the "Ozone" column of this data frame?
 sum(is.na(airquality$Ozone))
+```
 
+
+```{r}
 # 7. What is the mean of the "Ozone" column in this dataset? Exclude missing values (coded as NA) from this calculation.
 mean(airquality$Ozone, na.rm = TRUE)
+```
 
+
+```{r}
 # 8. Extract the subset of rows of the data frame where Ozone values are above 31 and Temp values are above 90.
 subset(airquality, Ozone > 31 & Temp > 90)
+```

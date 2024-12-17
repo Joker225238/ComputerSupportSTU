@@ -1,0 +1,121 @@
+
+```{r}
+# Загрузка необходимых библиотек
+library(dplyr)
+library(stringr)
+```
+
+```{r}
+# 1. Функция explore_city
+explore_city <- function(file_path) {
+  data <- read.csv(file_path)
+  city_day <- extract_name_day_type(file_path)
+  
+  data.frame(
+    city_name = city_day[1],
+    day_type = city_day[2],
+    n_rows = nrow(data),
+    min_price = min(data$realSum, na.rm = TRUE),
+    avg_price = mean(data$realSum, na.rm = TRUE),
+    max_price = max(data$realSum, na.rm = TRUE),
+    avg_satisfaction = mean(data$guest_satisfaction_overall, na.rm = TRUE)
+  )
+}
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+
+# Функция для извлечения имени города и типа дня из имени файла
+extract_name_day_type <- function(file_path) {
+  basename(file_path) |>
+    str_split_1("\\.") |>
+    first() |>
+    str_split_1("_")
+}
+
+# Функция для подготовки и объединения данных
+prepare_dataset <- function(folder_path) {
+  all_files <- list.files(folder_path, full.names = TRUE, pattern = "\\.csv$")
+  
+  # Проверка, что в папке есть CSV файлы
+  if (length(all_files) == 0) {
+    stop("В папке нет файлов CSV!")
+  }
+
+  # Чтение и объединение данных из всех файлов
+  combined_data <- lapply(all_files, function(file) {
+    city_day <- extract_name_day_type(file)  # Извлекаем город и тип дня
+    df <- read.csv(file)  # Читаем данные из файла
+    df$city <- city_day[1]  # Добавляем колонку с городом
+    df$day_type <- city_day[2]  # Добавляем колонку с типом дня
+    return(df)
+  }) |> bind_rows()  # Объединяем все данные в один датафрейм
+  
+  # Сохранение объединенного датасета
+  write.csv(combined_data, "airbnb_combined.csv", row.names = FALSE)
+  
+  # Выводим первые несколько строк для проверки
+  print(head(combined_data))
+  
+  return(combined_data)
+}
+
+# Пример использования функции
+folder_path <- "C:/Users/lenovo/Desktop/homework CSV/"
+combined_data <- prepare_dataset(folder_path)
+
+  
+```
+
+```{r}
+# 3. Функция t.test_prices
+t.test_prices <- function(city1_data, city2_data) {
+  t.test(city1_data$realSum, city2_data$realSum, na.action = na.omit)
+}
+```
+
+```{r}
+# Вспомогательная функция для извлечения названия города и типа дня
+extract_name_day_type <- function(file_path) {
+  file_path |>
+    basename() |>
+    str_split_1("\\.") |>
+    first() |>
+    str_split_1("_")
+}
+```
+
+```{r}
+# Пример использования:
+
+# Укажите путь к папке с файлами CSV
+folder_path <- "C:/Users/lenovo/Desktop/homework CSV"
+
+```
+
+```{r}
+# 1. Объединение всех файлов в один датасет
+df_combined <- prepare_dataset(folder_path)
+```
+
+```{r}
+# 2. Анализ одного города (Амстердам, будние дни)
+explore_result <- explore_city("C:/Users/lenovo/Desktop/homework CSV/amsterdam_weekdays.csv")
+
+print(explore_result)
+```
+
+```{r}
+# 3. Сравнение цен между Амстердамом и Берлином
+amsterdam_data <- df_combined[df_combined$city == "amsterdam", ]
+berlin_data <- df_combined[df_combined$city == "berlin", ]
+```
+
+```{r}
+# Выполнение T-теста
+t_test_result <- t.test_prices(amsterdam_data, berlin_data)
+print(t_test_result)
+```
+
